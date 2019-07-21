@@ -38,6 +38,7 @@ DrawPoint.onTap = DrawPoint.onClick = function(state, e) {
     features: [state.point.toGeoJSON()]
   });
   this.changeMode(Constants.modes.SIMPLE_SELECT, { featureIds: [state.point.id] });
+  return true;
 };
 
 DrawPoint.onStop = function(state) {

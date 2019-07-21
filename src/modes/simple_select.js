@@ -129,6 +129,7 @@ SimpleSelect.clickAnywhere = function (state) {
   }
   doubleClickZoom.enable(this);
   this.stopExtendedInteractions(state);
+  return true;
 };
 
 SimpleSelect.clickOnVertex = function(state, e) {
@@ -139,6 +140,7 @@ SimpleSelect.clickOnVertex = function(state, e) {
     startPos: e.lngLat
   });
   this.updateUIClasses({ mouse: Constants.cursors.MOVE });
+  return true;
 };
 
 SimpleSelect.startOnActiveFeature = function(state, e) {
@@ -197,6 +199,7 @@ SimpleSelect.clickOnFeature = function(state, e) {
 
   // No matter what, re-render the clicked feature
   this.doRender(featureId);
+  return true;
 };
 
 SimpleSelect.onMouseDown = function(state, e) {
@@ -243,6 +246,7 @@ SimpleSelect.whileBoxSelect = function(state, e) {
   state.boxSelectElement.style.WebkitTransform = translateValue;
   state.boxSelectElement.style.width = `${maxX - minX}px`;
   state.boxSelectElement.style.height = `${maxY - minY}px`;
+  return true;
 };
 
 SimpleSelect.dragMove = function(state, e) {
@@ -258,6 +262,7 @@ SimpleSelect.dragMove = function(state, e) {
   moveFeatures(this.getSelected(), delta);
 
   state.dragMoveLocation = e.lngLat;
+  return true;
 };
 
 SimpleSelect.onMouseUp = function(state, e) {
@@ -280,6 +285,7 @@ SimpleSelect.onMouseUp = function(state, e) {
     }
   }
   this.stopExtendedInteractions(state);
+  return true;
 };
 
 SimpleSelect.toDisplayFeatures = function(state, geojson, display) {

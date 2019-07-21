@@ -56,12 +56,15 @@ test('ModeHandler calling mode.start with context, and delegation functionality'
   t.equal(drawContext.store.render.callCount, 0, 'render not called if no handler fires');
   t.equal(drawContext.ui.updateMapClasses.callCount, 0, 'updateMapClasses not called if no handler fires');
 
-  const mousedownSpy = spy();
+  function handleMouseDown() {
+    return true;
+  }
+  const mousedownSpy = spy(handleMouseDown);
   startContext.on('mousedown', () => true, mousedownSpy);
   mh.mousedown({ two: 2 });
   t.equal(mousedownSpy.callCount, 1, 'mousedown callback called via delegation');
   t.deepEqual(mousedownSpy.getCall(0).args, [{ two: 2 }], 'with correct argument');
-  t.equal(drawContext.store.render.callCount, 1, 'render called if handler fires');
+  t.equal(drawContext.store.render.callCount, 1, 'render called if handler fires and returns true');
   t.equal(drawContext.ui.updateMapClasses.callCount, 1, 'updateMapClasses called if handler fires');
 
   const mousedownFailSpy = spy();

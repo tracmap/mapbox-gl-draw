@@ -40,10 +40,12 @@ DrawPolygon.clickAnywhere = function(state, e) {
   state.polygon.updateCoordinate(`0.${state.currentVertexPosition}`, e.lngLat.lng, e.lngLat.lat);
   state.currentVertexPosition++;
   state.polygon.updateCoordinate(`0.${state.currentVertexPosition}`, e.lngLat.lng, e.lngLat.lat);
+  return true;
 };
 
 DrawPolygon.clickOnVertex = function(state) {
-  return this.changeMode(Constants.modes.SIMPLE_SELECT, { featureIds: [state.polygon.id] });
+  this.changeMode(Constants.modes.SIMPLE_SELECT, { featureIds: [state.polygon.id] });
+  return true;
 };
 
 DrawPolygon.onMouseMove = function(state, e) {
@@ -51,6 +53,7 @@ DrawPolygon.onMouseMove = function(state, e) {
   if (CommonSelectors.isVertex(e)) {
     this.updateUIClasses({ mouse: Constants.cursors.POINTER });
   }
+  return true;
 };
 
 DrawPolygon.onTap = DrawPolygon.onClick = function(state, e) {

@@ -81,10 +81,12 @@ DrawLineString.clickAnywhere = function(state, e) {
   } else {
     state.line.addCoordinate(0, e.lngLat.lng, e.lngLat.lat);
   }
+  return true;
 };
 
 DrawLineString.clickOnVertex = function(state) {
-  return this.changeMode(Constants.modes.SIMPLE_SELECT, { featureIds: [state.line.id] });
+  this.changeMode(Constants.modes.SIMPLE_SELECT, { featureIds: [state.line.id] });
+  return true;
 };
 
 DrawLineString.onMouseMove = function(state, e) {
@@ -92,11 +94,12 @@ DrawLineString.onMouseMove = function(state, e) {
   if (CommonSelectors.isVertex(e)) {
     this.updateUIClasses({ mouse: Constants.cursors.POINTER });
   }
+  return true;
 };
 
 DrawLineString.onTap = DrawLineString.onClick = function(state, e) {
   if (CommonSelectors.isVertex(e)) return this.clickOnVertex(state, e);
-  this.clickAnywhere(state, e);
+  return this.clickAnywhere(state, e);
 };
 
 DrawLineString.onKeyUp = function(state, e) {

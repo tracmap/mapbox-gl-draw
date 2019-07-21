@@ -37,8 +37,10 @@ const ModeHandler = function(mode, DrawContext) {
     while (iHandle--) {
       const handle = handles[iHandle];
       if (handle.selector(event)) {
-        handle.fn.call(ctx, event);
-        DrawContext.store.render();
+        const shouldRender = handle.fn.call(ctx, event);
+        if (shouldRender) {
+          DrawContext.store.render();
+        }
         DrawContext.ui.updateMapClasses();
 
         // ensure an event is only handled once

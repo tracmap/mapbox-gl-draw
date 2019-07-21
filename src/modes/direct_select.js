@@ -53,6 +53,7 @@ DirectSelect.onVertex = function (state, e) {
 
   const selectedCoordinates = this.pathsToCoordinates(state.featureId, state.selectedCoordPaths);
   this.setSelectedCoordinates(selectedCoordinates);
+  return true;
 };
 
 DirectSelect.onMidpoint = function(state, e) {
@@ -61,6 +62,7 @@ DirectSelect.onMidpoint = function(state, e) {
   state.feature.addCoordinate(about.coord_path, about.lng, about.lat);
   this.fireUpdate();
   state.selectedCoordPaths = [about.coord_path];
+  return true;
 };
 
 DirectSelect.pathsToCoordinates = function(featureId, paths) {
@@ -107,6 +109,7 @@ DirectSelect.clickActiveFeature = function (state) {
   state.selectedCoordPaths = [];
   this.clearSelectedCoordinates();
   state.feature.changed();
+  return true;
 };
 
 // EXTERNAL FUNCTIONS
@@ -211,6 +214,8 @@ DirectSelect.onDrag = function(state, e) {
   else this.dragFeature(state, e, delta);
 
   state.dragMoveLocation = e.lngLat;
+
+  return true;
 };
 
 DirectSelect.onClick = function(state, e) {

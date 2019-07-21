@@ -30,7 +30,7 @@ module.exports = function(modeObject) {
 
     function wrapper(eh) {
       return function(e) {
-        mode[eh](state, e);
+        return mode[eh](state, e);
       };
     }
 
