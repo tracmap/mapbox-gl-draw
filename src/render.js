@@ -20,7 +20,8 @@ module.exports = function render() {
       return geojson.properties.id && newHotIds.indexOf(geojson.properties.id) === -1 && store.get(geojson.properties.id) !== undefined;
     }).map(geojson => geojson.properties.id);
   }
-
+  const oldCold = store.sources.cold;
+  const oldHot = store.sources.hot;
   store.sources.hot = [];
   const lastColdCount = store.sources.cold.length;
   store.sources.cold = store.isDirty ? [] : store.sources.cold.filter((geojson) => {
@@ -40,16 +41,51 @@ module.exports = function render() {
     });
   }
 
+  const coldIds = store.sources.cold.map((coldFeature) => {
+    return coldFeature.properties.id || coldFeature.properties.parent;
+  });
+  const hotIds = store.sources.hot.map((hotFeature) => {
+    return hotFeature.properties.id || hotFeature.properties.parent;
+  });
+  // Cold stuff
   if (coldChanged) {
+    const removeColdFromHot = (e) => {
+      if (e.sourceId === Constants.sources.COLD) {
+        store.ctx.map.getSource(Constants.sources.HOT).setData({
+          type: Constants.geojsonTypes.FEATURE_COLLECTION,
+          features: store.sources.hot
+        });
+      } else {
+        store.ctx.map.once('data', removeColdFromHot);
+      }
+    };
+    store.ctx.map.once('data', removeColdFromHot);
     store.ctx.map.getSource(Constants.sources.COLD).setData({
       type: Constants.geojsonTypes.FEATURE_COLLECTION,
-      features: store.sources.cold
+      features: store.sources.cold.concat(oldCold.filter((coldFeature) => {
+        const id = coldFeature.properties.id || coldFeature.properties.parent;
+        return !coldIds.includes(id);
+      }))
     });
   }
-
+  // Hot stuff
+  const removeHotFromCold = (e) => {
+    if (e.sourceId === Constants.sources.HOT) {
+      store.ctx.map.getSource(Constants.sources.COLD).setData({
+        type: Constants.geojsonTypes.FEATURE_COLLECTION,
+        features: store.sources.cold
+      });
+    } else {
+      store.ctx.map.once('data', removeHotFromCold);
+    }
+  };
+  store.ctx.map.once('data', removeHotFromCold);
   store.ctx.map.getSource(Constants.sources.HOT).setData({
     type: Constants.geojsonTypes.FEATURE_COLLECTION,
-    features: store.sources.hot
+    features: store.sources.hot.concat(oldHot.filter((hotFeature) => {
+      const id = hotFeature.properties.id || hotFeature.properties.parent;
+      return !hotIds.includes(id);
+    }))
   });
 
   if (store._emitSelectionChange) {
