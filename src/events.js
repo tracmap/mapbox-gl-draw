@@ -26,8 +26,6 @@ module.exports = function(ctx) {
     })) {
       ctx.ui.queueMapClasses({ mouse: Constants.cursors.DRAG });
       currentMode.drag(event);
-    } else {
-      event.originalEvent.stopPropagation();
     }
   };
 
