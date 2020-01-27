@@ -1,12 +1,15 @@
 {
-  "name": "@mapbox/mapbox-gl-draw",
-  "version": "1.1.2",
+  "name": "@tracmap/mapbox-gl-draw",
+  "version": "1.1.23",
   "description": "A drawing component for Mapbox GL JS",
   "homepage": "https://github.com/mapbox/mapbox-gl-draw",
   "author": "mapbox",
   "license": "ISC",
   "main": "index.js",
   "style": "dist/mapbox-gl-draw.css",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "browserify": {
     "transform": [
       "envify",
@@ -27,10 +30,7 @@
     "prepublish": "npm run build && npm run build-min",
     "start": "npm run build-token && node server.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/mapbox/mapbox-gl-draw.git"
-  },
+  "repository": "https://github.com/tracmap/mapbox-gl-draw",
   "keywords": [
     "webgl",
     "mapbox",
